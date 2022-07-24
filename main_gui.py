@@ -1,7 +1,12 @@
 import PySimpleGUI as Sg
 import fast_clicking
 import savescum
+import auto_ascend
 from multiprocessing import Process
+
+
+def auto_asc():
+    auto_ascend.ascend()
 
 
 def fast_click():
@@ -30,6 +35,17 @@ def main_window():
         event, values = window.read()
         if event in (Sg.WIN_CLOSED, "exit"):
             break
+        elif event == 'ascend':
+            if window[event].get_text() == 'Ascend [OFF]':
+                aa = Process(target=auto_asc)
+                aa.daemon = True
+                window[event].Update("Ascend [ON]", button_color=('white', 'green'))
+                aa.start()
+                print('Auto ascend enabled, press F4 to start auto ascending, press F3 to stop')
+            else:
+                aa.kill()
+                window[event].Update("Ascend [OFF]", button_color=('black', 'grey'))
+                print('Auto ascend disabled.')
         elif event == 'fast_click':
             if window[event].get_text() == 'Fast click [OFF]':
                 fc = Process(target=fast_click)
