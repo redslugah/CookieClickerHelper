@@ -1,8 +1,13 @@
 import PySimpleGUI as Sg
+from multiprocessing import Process
 import fast_clicking
 import savescum
 import auto_ascend
-from multiprocessing import Process
+import click_combo
+
+
+def combo():
+    click_combo.start()
 
 
 def auto_asc():
@@ -68,6 +73,17 @@ def main_window():
                 sc.kill()
                 window[event].Update("Savescum [OFF]", button_color=('black', 'grey'))
                 print('Savescum disabled.')
+        elif event == 'click_combo':
+            if window[event].get_text() == 'Sell click combo [OFF]':
+                cc = Process(target=combo)
+                cc.daemon = True
+                window[event].Update("Sell click combo [ON]", button_color=('white', 'green'))
+                cc.start()
+                print('Sell click combo enabled, press F6 to combo sell.')
+            else:
+                cc.kill()
+                window[event].Update("Sell click combo [OFF]", button_color=('black', 'grey'))
+                print('Sell click combo disabled.')
 
 
 if __name__ == '__main__':
