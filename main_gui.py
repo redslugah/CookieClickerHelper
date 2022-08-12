@@ -4,6 +4,15 @@ import fast_clicking
 import savescum
 import auto_ascend
 import click_combo
+import quick_save
+
+
+def stock_bot():
+    pass
+
+
+def quickly_save():
+    quick_save.quick_save_start()
 
 
 def combo():
@@ -30,11 +39,11 @@ def main_window():
          Sg.Button("Savescum [OFF]", size=(20, 0), key="savescum", button_color=('black', 'grey'))],
         [Sg.Button("Sell click combo [OFF]", size=(20, 0), key="click_combo", button_color=('black', 'grey')),
          Sg.Button("Stock market bot [OFF]", size=(20, 0), key="stock_bot", button_color=('black', 'grey')),
-         Sg.Button("EXIT", size=(20, 0), key="exit")],
+         Sg.Button("Quick save [OFF]", size=(20, 0), key="quick_save", button_color=('black', 'grey'))],
         [Sg.Output(size=(75, 15), key='-OUTPUT-')],
         [Sg.Button("Clear log", size=(20, 0), key="clear_log", button_color=('black', 'grey')),
          Sg.Button("Hotkeys", size=(20, 0), key="hotkeys", button_color=('black', 'grey')),
-         Sg.Button("Something", size=(20, 0), key="aaaaaa", button_color=('black', 'grey'))]]
+         Sg.Button("EXIT", size=(20, 0), key="exit")]]
     window = Sg.Window("Cookie Clicker Helper", layout, element_justification='c')
     while True:
         event, values = window.read()
@@ -79,11 +88,35 @@ def main_window():
                 cc.daemon = True
                 window[event].Update("Sell click combo [ON]", button_color=('white', 'green'))
                 cc.start()
-                print('Sell click combo enabled, press F6 to combo sell.')
+                print('Sell click combo enabled, press F7 to combo sell.')
             else:
                 cc.kill()
                 window[event].Update("Sell click combo [OFF]", button_color=('black', 'grey'))
                 print('Sell click combo disabled.')
+        elif event == 'quick_save':
+            if window[event].get_text() == 'Quick save [OFF]':
+                qs = Process(target=quickly_save)
+                qs.daemon = True
+                window[event].Update("Quick save [ON]", button_color=('white', 'green'))
+                qs.start()
+                print('Quick save enabled, press F5 to save to clipboard')
+            else:
+                qs.kill()
+                window[event].Update("Quick save [OFF]", button_color=('black', 'grey'))
+                print('quick save disabled.')
+        elif event == 'stock_bot':
+            if window[event].get_text() == 'Stock market bot [OFF]':
+                '''sm = Process(target=stock_bot)
+                sm.daemon = True
+                window[event].Update("Stock market bot [OFF]", button_color=('white', 'green'))
+                sm.start()'''
+                print('Stock market is not implemented yet.')
+            else:
+                '''sm.kill()
+                window[event].Update("Stock market bot [OFF]", button_color=('black', 'grey'))
+                print('Stock market bot disabled.')'''
+        elif event == 'clear_log':
+            window.FindElement('-OUTPUT-').Update("")
 
 
 if __name__ == '__main__':

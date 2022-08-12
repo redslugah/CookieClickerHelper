@@ -33,6 +33,9 @@ def do_combo():
 
 
 def do_combo2():
+    keyboard.press('F3')
+    time.sleep(0.3)
+    keyboard.release('F3')
     pyautogui.click(x=1630, y=280)
     pyautogui.click(x=1870, y=273)
 
@@ -55,10 +58,10 @@ def do_combo2():
         pyautogui.click(x=1750, y=640)
 
     pyautogui.moveTo(x=290, y=420)
-
+    keyboard.press_and_release('F4')
 
 def start():
     pyautogui.PAUSE = 0.01
     while True:
-        keyboard.add_hotkey('F6', do_combo)
+        keyboard.add_hotkey('F7', do_combo2)
         keyboard.wait()
